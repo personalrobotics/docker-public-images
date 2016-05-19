@@ -14,3 +14,6 @@ $ docker build -t <image_name> .
 Folders that contain a docker-compose.yml can start a Docker-Compose container:
 
 $ docker-compose up
+
+[1]: http://docs.docker.com/
+[2]: https://docs.docker.com/compose/
