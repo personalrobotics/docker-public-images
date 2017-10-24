@@ -2,13 +2,16 @@ FROM ros:indigo-ros-base
 MAINTAINER Pras Velagapudi <pkv@cs.cmu.edu>
 ENV DEBIAN_FRONTEND noninteractive
 
-# Add the personalrobotics APT repository
-RUN apt-get update && apt-get install -y curl
-RUN sh -c 'echo "deb http://packages.personalrobotics.ri.cmu.edu/public trusty main" \
-        > /etc/apt/sources.list.d/personalrobotics.list' \
-    && curl https://www.personalrobotics.ri.cmu.edu/files/personalrobotics.gpg | sudo apt-key add -
+# Add the personalrobotics PPA
+# TODO: do this without software-properties-common
+RUN apt-get update -qq \
+    && apt-get install -qq --no-install-recommends software-properties-common \
+    && apt-get clean -qq \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install OpenRAVE and clear cache.
-RUN apt-get update \
-    && apt-get install -y pr-openrave \
+RUN add-apt-repository -y ppa:personalrobotics/ppa \
+    && apt-get update -qq \
+    && apt-get install -qq --no-install-recommends pr-openrave \
+    && apt-get clean -qq \
     && rm -rf /var/lib/apt/lists/*
